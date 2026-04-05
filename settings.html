@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки HEmax</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .settings-header {
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .settings-header h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .settings-section {
+            border: 1px solid #1a1a1a;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            background: #0a0a0a;
+            padding: 12px 16px;
+            font-weight: bold;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .setting-item {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #0a0a0a;
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .setting-label {
+            font-size: 13px;
+        }
+        .setting-desc {
+            font-size: 10px;
+            color: #555;
+            margin-top: 4px;
+        }
+        input, select, textarea {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            color: #ffffff;
+            padding: 8px 12px;
+            font-family: monospace;
+            font-size: 12px;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #ffffff;
+        }
+        button {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            color: #ffffff;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+        button:hover {
+            background: #1a1a1a;
+        }
+        .avatar-preview {
+            width: 60px;
+            height: 60px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1a1a1a;
+            transition: 0.1s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #ffffff;
+            transition: 0.1s;
+        }
+        input:checked + .slider {
+            background-color: #ffffff;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: #000000;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #555;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .back-link:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1>HEmax / НАСТРОЙКИ</h1>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">ПРОФИЛЬ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Аватар</div>
+                    <div class="setting-desc">Нажмите для загрузки</div>
+                </div>
+                <div class="avatar-preview" id="avatarPreview">👤</div>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Отображаемое имя</div>
+                    <div class="setting-desc">Как вас видят другие</div>
+                </div>
+                <input type="text" id="displayName" placeholder="Ваше имя" maxlength="30">
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">О себе</div>
+                    <div class="setting-desc">Статус в профиле</div>
+                </div>
+                <textarea id="bio" rows="2" cols="25" placeholder="Расскажите о себе..." maxlength="140"></textarea>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">КОНФИДЕНЦИАЛЬНОСТЬ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">PIN-код</div>
+                    <div class="setting-desc">Защита приложения</div>
+                </div>
+                <button id="setupPinBtn">Установить</button>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Биометрия</div>
+                    <div class="setting-desc">Face ID / Touch ID</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="biometricToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Показывать статус "онлайн"</div>
+                    <div class="setting-desc">Другие видят вашу активность</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="showOnlineToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Читать уведомления вслух</div>
+                    <div class="setting-desc">Озвучивание входящих сообщений</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="readAloudToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">ЧАТЫ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Размер шрифта</div>
+                    <div class="setting-desc">Мелкий / Средний / Крупный</div>
+                </div>
+                <select id="fontSize">
+                    <option value="12">Мелкий</option>
+                    <option value="14" selected>Средний</option>
+                    <option value="18">Крупный</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Enter отправляет сообщение</div>
+                    <div class="setting-desc">Shift+Enter для новой строки</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="enterToSend" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Автосохранение медиа</div>
+                    <div class="setting-desc">Сохранять фото в галерею</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="autoSaveMedia">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">УВЕДОМЛЕНИЯ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Звук сообщений</div>
+                    <div class="setting-desc">Воспроизводить звук</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="soundEnabled" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Вибрация</div>
+                    <div class="setting-desc">Вибрация на мобильных</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="vibrationEnabled" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">ДАННЫЕ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Экономия трафика</div>
+                    <div class="setting-desc">Не загружать медиа автоматически</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="dataSaver">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Очистить кэш</div>
+                    <div class="setting-desc">Удалить временные файлы</div>
+                </div>
+                <button id="clearCacheBtn">Очистить</button>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Экспорт данных</div>
+                    <div class="setting-desc">Сохранить все сообщения</div>
+                </div>
+                <button id="exportDataBtn">Экспорт</button>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">О ПРИЛОЖЕНИИ</div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Версия</div>
+                    <div class="setting-desc">HEmax v2.0</div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Политика конфиденциальности</div>
+                </div>
+                <button id="privacyBtn">Читать</button>
+            </div>
+        </div>
+        
+        <a href="/" class="back-link">← Вернуться в чат</a>
+    </div>
+    
+    <script>
+        // Загрузка настроек из localStorage
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('hemax_settings') || '{}');
+            document.getElementById('displayName').value = settings.displayName || '';
+            document.getElementById('bio').value = settings.bio || '';
+            document.getElementById('fontSize').value = settings.fontSize || '14';
+            document.getElementById('enterToSend').checked = settings.enterToSend !== false;
+            document.getElementById('soundEnabled').checked = settings.soundEnabled !== false;
+            document.getElementById('vibrationEnabled').checked = settings.vibrationEnabled !== false;
+            document.getElementById('showOnlineToggle').checked = settings.showOnline !== false;
+            document.getElementById('dataSaver').checked = settings.dataSaver || false;
+            document.getElementById('autoSaveMedia').checked = settings.autoSaveMedia || false;
+            document.getElementById('biometricToggle').checked = settings.biometric || false;
+            document.getElementById('readAloudToggle').checked = settings.readAloud || false;
+            
+            if (settings.avatar) {
+                document.getElementById('avatarPreview').innerHTML = `<img src="${settings.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+            }
+            
+            document.documentElement.style.fontSize = settings.fontSize + 'px';
+        }
+        
+        function saveSettings() {
+            const settings = {
+                displayName: document.getElementById('displayName').value,
+                bio: document.getElementById('bio').value,
+                fontSize: document.getElementById('fontSize').value,
+                enterToSend: document.getElementById('enterToSend').checked,
+                soundEnabled: document.getElementById('soundEnabled').checked,
+                vibrationEnabled: document.getElementById('vibrationEnabled').checked,
+                showOnline: document.getElementById('showOnlineToggle').checked,
+                dataSaver: document.getElementById('dataSaver').checked,
+                autoSaveMedia: document.getElementById('autoSaveMedia').checked,
+                biometric: document.getElementById('biometricToggle').checked,
+                readAloud: document.getElementById('readAloudToggle').checked
+            };
+            localStorage.setItem('hemax_settings', JSON.stringify(settings));
+            document.documentElement.style.fontSize = settings.fontSize + 'px';
+            
+            // Отправляем на сервер
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: localStorage.getItem('hemax_user'), settings})
+            }).catch(e => console.log('Settings saved locally'));
+        }
+        
+        // Загрузка аватара
+        document.getElementById('avatarPreview').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const avatarData = ev.target.result;
+                    document.getElementById('avatarPreview').innerHTML = `<img src="${avatarData}" style="width:100%;height:100%;object-fit:cover;">`;
+                    const settings = JSON.parse(localStorage.getItem('hemax_settings') || '{}');
+                    settings.avatar = avatarData;
+                    localStorage.setItem('hemax_settings', JSON.stringify(settings));
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        });
+        
+        // PIN-код
+        document.getElementById('setupPinBtn').addEventListener('click', () => {
+            const pin = prompt('Введите PIN-код (4-6 цифр):');
+            if (pin && /^\d{4,6}$/.test(pin)) {
+                // В реальном приложении здесь должно быть хеширование
+                localStorage.setItem('hemax_pin', btoa(pin));
+                alert('PIN-код установлен');
+            } else if (pin) {
+                alert('PIN должен содержать 4-6 цифр');
+            }
+        });
+        
+        // Очистка кэша
+        document.getElementById('clearCacheBtn').addEventListener('click', async () => {
+            if (confirm('Очистить кэш? Сообщения не будут удалены.')) {
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    await Promise.all(keys.map(key => caches.delete(key)));
+                    alert('Кэш очищен');
+                }
+            }
+        });
+        
+        // Экспорт данных
+        document.getElementById('exportDataBtn').addEventListener('click', () => {
+            alert('Функция экспорта будет доступна в следующей версии');
+        });
+        
+        // Сохранение при изменениях
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('change', saveSettings);
+            if (el.tagName === 'INPUT' && el.type === 'text') {
+                el.addEventListener('blur', saveSettings);
+            }
+        });
+        
+        loadSettings();
+    </script>
+</body>
+</html>
